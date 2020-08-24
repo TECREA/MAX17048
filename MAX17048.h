@@ -12,8 +12,8 @@
   #include <stdint.h>
 
 
-  #define MAX17048_VERSION     "1.0.0"
-  #define MAX17048_CAPTION     "MAX17048 " MAX17048_VERSION
+  #define MAX17048_REV		    "1.0.0"
+  #define MAX17048_CAPTION     "MAX17048 " MAX17048_REV
 
   #define MAX17048_SLEEP_ON                     ( 0x01u )  
   #define MAX17048_SLEEP_OFF                    ( 0x00u )
