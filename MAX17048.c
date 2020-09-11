@@ -29,7 +29,7 @@ void MAX17048_Write(MAX17048_t *Obj, uint8_t Reg, uint16_t data, uint8_t amount)
 uint16_t MAX17048_Read(MAX17048_t *Obj, uint8_t Reg, uint8_t amount){
   uint8_t buffer[2];
   buffer[0] = Reg;
-  Obj->Read(Obj->Address, buffer, amount);
+  Obj->Read(Obj->Address, buffer, amount, MAX17048_SIZEREG);
   return buffer[0] << 8 | buffer[1];
 }
 
