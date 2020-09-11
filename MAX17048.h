@@ -12,6 +12,7 @@
   #include <stdint.h>
 
 
+  #define MAX17048_SIZEREG                      ( 0x01u )
   #define MAX17048_REV		    "1.0.0"
   #define MAX17048_CAPTION     "MAX17048 " MAX17048_REV
 
@@ -28,7 +29,7 @@
   #define MAX17048_RESET                        ( 0x5400 )
 
   #define MAX17048_ADDR_SLAVE                   ( 0x6Cu )
-  #define MAX17048_RCOMP0	                ( 0x97u )
+  #define MAX17048_RCOMP0	                    ( 0x97u )
 
   /*MODE Register Format*/
   #define MAX17048_MODE_HI_STAT_BIT             ( 12 )
@@ -36,15 +37,14 @@
   #define MAX17048_MODE_QUICK_START_BIT	        ( 14 )
 
   /* CONFIG Register Format*/
-  #define MAX17048_CONFIG_SLEEP_BIT		( 7 )
+  #define MAX17048_CONFIG_SLEEP_BIT	        	( 7 )
 
   /*Resolution for calculate Vcell*/
-  #define MAX17048_VCELL_RESOLUTION	        ( 78125 )
+  #define MAX17048_VCELL_RESOLUTION	            ( 78125 )
 
     
   typedef void (*Write_Fcn )(uint8_t, void*, uint8_t);
-  typedef void (*Read_Fcn  )(uint8_t, void*, uint8_t);
-
+  typedef void (*Read_Fcn  )(uint8_t, void*, uint8_t, uint8_t);
   /**
    *@brief structure containing all data 
    */
@@ -88,7 +88,8 @@
    */
   uint16_t MAX17048_Version(MAX17048_t *Obj);
   
-  /**@param this function read voltage from battery
+  /**
+   * @param this function read voltage from battery
    * @param Obj Obj Structure containing all data from the max17048 module.
    * @return Voltage read on battery in mV
    */
@@ -151,10 +152,33 @@
     HAL_I2C_Master_Transmit(&hi2c1,Address,DatatoSend,amount,10);
   }
 
-  void Read_I2C(uint8_t Address, void *Register, uint8_t amount){
+  void Read_I2C(uint8_t Address, void *Register, uint8_t amount, uint8_t Sizereg){
     uint8_t *DatatoSend = (uint8_t *)Register;
-    HAL_I2C_Master_Transmit(&hi2c1,Address,DatatoSend, 1, 10);
+    HAL_I2C_Master_Transmit(&hi2c1,Address,DatatoSend, Sizereg, 10);
     HAL_I2C_Master_Receive(&hi2c1,Address,DatatoSend, amount, 10);
+  }
+
+=======================================================================
+                       Kinetes (Processor Expert)
+=======================================================================
+
+    void Write_I2C(uint8_t Address, void *data, uint8_t amount) {
+	  uint8_t *DatatoSend = (uint8_t *)data;
+	  uint16_t Bytes;
+
+	  I2C_SelectSlave(Address);                   // Send address device
+	  I2C_SendBlock(DatatoSend, amount, &Bytes);  // Register to read
+	  I2C_SendStop();                             // send Stop bit
+  }
+
+  void Read_I2C(uint8_t Address, void *Data, uint8_t amount, uint8_t Sizereg) {
+	  uint8_t *DatatoSend = (uint8_t *)Data;
+	  uint16_t Bytes;
+
+	  I2C_SelectSlave(Address);                     // Send address device
+	  I2C_SendBlock(DatatoSend, Sizereg, &Bytes);   // Register to read
+	  I2C_RecvBlock(DatatoSend, amount, &Bytes);    // Read data
+	  I2C_SendStop();                               // send Stop bit
   }
   */   
   
