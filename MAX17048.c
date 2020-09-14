@@ -9,7 +9,7 @@
 #include "MAX17048.h"
 
 /*============================================================================*/
-void MAX17048_Init(MAX17048_t *Obj, Write_Fcn Write, Read_Fcn Read, uint8_t Addres_Device){
+void MAX17048_Init(MAX17048_t *Obj, MAX17048_Write_Fcn_t Write, MAX17048_Read_Fcn_t Read, uint8_t Addres_Device){
   Obj->Write = Write;
   Obj->Read = Read;
   Obj->Address = Addres_Device;
