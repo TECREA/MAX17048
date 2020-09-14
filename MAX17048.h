@@ -43,14 +43,14 @@
   #define MAX17048_VCELL_RESOLUTION	            ( 78125 )
 
     
-  typedef void (*Write_Fcn )(uint8_t, void*, uint8_t);
-  typedef void (*Read_Fcn  )(uint8_t, void*, uint8_t, uint8_t);
+  typedef void (*MAX17048_Write_Fcn_t )(uint8_t, void*, uint8_t);
+  typedef void (*MAX17048_Read_Fcn_t  )(uint8_t, void*, uint8_t, uint8_t);
   /**
    *@brief structure containing all data 
    */
   typedef struct {
-    Write_Fcn Write;
-    Read_Fcn  Read;
+    MAX17048_Write_Fcn_t Write;
+    MAX17048_Read_Fcn_t  Read;
     uint8_t   Address;
   }MAX17048_t;
 
@@ -61,7 +61,7 @@
    * @param Read  pointer to function i2c read
    * @param Addres_Device slave addres device 
    */
-  void MAX17048_Init(MAX17048_t *Obj, Write_Fcn Write, Read_Fcn Read, uint8_t Addres_Device);
+  void MAX17048_Init(MAX17048_t *Obj, MAX17048_Write_Fcn_t Write, MAX17048_Read_Fcn_t Read, uint8_t Addres_Device);
   
   /**
    * @brief this function read register
